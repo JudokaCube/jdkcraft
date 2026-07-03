@@ -1,0 +1,231 @@
+/* ============================================
+   JDKCraft — style.css
+   Dark mode · Cyan accent · Glassmorphism
+   ============================================ */
+
+/* ── Reset & base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+::selection { background: var(--cyan-muted); color: var(--text); }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
+
+:root {
+  --cyan:        #00e5ff;
+  --cyan-dim:    #00b8d4;
+  --cyan-muted:  rgba(0, 229, 255, 0.12);
+  --cyan-glow:   rgba(0, 229, 255, 0.25);
+  --cyan-glow2:  rgba(0, 229, 255, 0.08);
+
+  --bg:          #090b0e;
+  --bg-card:     rgba(255,255,255,0.04);
+  --bg-card-hov: rgba(255,255,255,0.07);
+  --bg-card-solid:     #13161b;
+  --bg-card-solid-hov: #181c22;
+  --bg-glass:    rgba(10, 14, 20, 0.72);
+
+  --text:        #e8eaed;
+  --text-muted:  #7a8899;
+  --text-dim:    #4a5568;
+  --border:      rgba(255,255,255,0.08);
+  --border-cyan: rgba(0, 229, 255, 0.20);
+
+  --radius-sm:   8px;
+  --radius:      14px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
+
+  --font-main:  'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:  'Fira Code', 'Courier New', monospace;
+
+  --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Light theme override ── */
+:root[data-theme="light"] {
+  --cyan:        #00b8d4;
+  --cyan-dim:    #0097a7;
+  --cyan-muted:  rgba(0, 184, 212, 0.10);
+  --cyan-glow:   rgba(0, 184, 212, 0.20);
+  --cyan-glow2:  rgba(0, 184, 212, 0.08);
+  --bg:          #f5f7f9;
+  --bg-card:     rgba(0, 0, 0, 0.03);
+  --bg-card-hov: rgba(0, 0, 0, 0.055);
+  --bg-card-solid:     #ffffff;
+  --bg-card-solid-hov: #f5f8fa;
+  --bg-glass:    rgba(255, 255, 255, 0.85);
+  --text:        #1a1f24;
+  --text-muted:  #5c6b7a;
+  --text-dim:    #8a96a3;
+  --border:      rgba(0, 0, 0, 0.08);
+  --border-cyan: rgba(0, 184, 212, 0.28);
+  --hero-dot:    rgba(0, 0, 0, 0.045);
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; border: none; background: transparent; text-align: left; }
+
+.fade-in { animation: fadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Dashboard Layout ── */
+html, body.dashboard-body { height: 100%; overflow: hidden; }
+
+.dash-bg-grid {
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, var(--hero-dot, rgba(255,255,255,0.05)) 1px, transparent 1px);
+  background-size: 30px 30px; pointer-events: none; z-index: 0;
+}
+
+.dash-glow {
+  position: fixed; top: 6%; left: 50%; transform: translateX(-50%);
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+  animation: glow-breathe 7s ease-in-out infinite;
+}
+
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 1;   transform: translateX(-50%) scale(1.06); }
+}
+
+.dashboard {
+  position: relative; z-index: 1; isolation: isolate;
+  height: 100svh; width: 100%; display: flex; flex-direction: column;
+  align-items: stretch; justify-content: center; gap: clamp(1rem, 3vh, 2rem);
+  padding: clamp(1rem, 3vh, 2rem) clamp(1.2rem, 3.5vw, 3rem);
+  max-width: 1200px; margin-inline: auto; overflow: hidden;
+}
+
+/* ── Back to main site button ── */
+.skye-back {
+  position: fixed; top: 1.25rem; left: 1.25rem; z-index: 999;
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
+  background: var(--bg-glass); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  transition: color var(--transition), border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+.skye-back:hover {
+  color: var(--cyan); border-color: var(--border-cyan);
+  box-shadow: 0 0 14px var(--cyan-glow); transform: translateY(-1px);
+}
+
+/* ── Hero ── */
+.dash-hero { text-align: center; flex-shrink: 0; }
+.dash-eyebrow { display: block; font-family: var(--font-mono); font-size: 0.8rem; color: var(--cyan); opacity: 0.75; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
+.dash-title { font-size: clamp(2rem, 5vh, 3.5rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1; background: linear-gradient(135deg, var(--text) 40%, var(--cyan) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.dash-desc { font-size: clamp(0.8rem, 1.5vh, 1rem); color: var(--text-muted); margin-top: 0.4rem; font-family: var(--font-mono); letter-spacing: 0.01em; }
+
+/* ── Tiles & Grid ── */
+.jdkcraft-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(300px, 1.5fr);
+  grid-template-rows: auto auto;
+  grid-template-areas: 
+    "skin ip"
+    "skin discord"
+    "skin info";
+  gap: clamp(1rem, 2vh, 1.5rem);
+  width: 100%; flex: 0 0 auto; min-height: 0;
+}
+
+.tile-skin { grid-area: skin; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.tile-ip { grid-area: ip; }
+.tile-discord { grid-area: discord; }
+.tile-info { grid-area: info; }
+
+.tile {
+  background: var(--bg-card-solid); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: clamp(1.2rem, 2.5vh, 1.8rem);
+  display: flex; flex-direction: column; position: relative;
+  transition: background var(--transition), border-color var(--transition), box-shadow var(--transition), transform 0.12s linear;
+  will-change: transform;
+}
+.tile.tile-resetting { transition: background var(--transition), border-color var(--transition), box-shadow var(--transition), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.tile:hover { border-color: var(--border-cyan); box-shadow: 0 10px 32px rgba(0,0,0,0.35), 0 0 0 1px var(--border-cyan), 0 0 24px var(--cyan-glow2); transform: translateY(-2px); }
+
+.tile-head { flex-shrink: 0; margin-bottom: 0.8rem; width: 100%; text-align: left; }
+.tile-label { font-family: var(--font-mono); font-size: 0.8rem; color: var(--cyan); letter-spacing: 0.07em; opacity: 0.85; transition: letter-spacing var(--transition), text-shadow var(--transition); }
+.tile:hover .tile-label { letter-spacing: 0.1em; text-shadow: 0 0 10px var(--cyan-glow2); }
+
+/* ── Server IP Tile ── */
+.tile-ip { cursor: pointer; }
+.tile-ip:active { transform: translateY(0) scale(0.98); }
+.ip-content { display: flex; align-items: center; gap: 1rem; }
+.ip-icon { width: 52px; height: 52px; border-radius: var(--radius); background: var(--cyan-muted); border: 1px solid var(--border-cyan); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: transform var(--transition), box-shadow var(--transition); }
+.tile-ip:hover .ip-icon { transform: scale(1.08) rotate(-5deg); box-shadow: 0 0 18px var(--cyan-glow); }
+.ip-text h3 { font-size: 1.4rem; font-weight: 700; color: var(--text); font-family: var(--font-mono); }
+.ip-text p { font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-main); transition: color 0.2s ease; }
+.tile-ip.copied .ip-text p { color: #3ba55d; font-weight: 600; }
+
+/* ── 3D Skin Tile ── */
+.mc-skin-canvas-wrap {
+  width: min(240px, 100%); aspect-ratio: 1; border-radius: var(--radius);
+  background: var(--bg-card); border: 1px solid var(--border);
+  overflow: hidden; position: relative; margin-bottom: 1rem;
+}
+.mc-skin-canvas-wrap canvas { width: 100% !important; height: 100% !important; display: block; cursor: grab; }
+.mc-skin-canvas-wrap canvas:active { cursor: grabbing; }
+.mc-skin-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); pointer-events: none; }
+.skin-name { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 0.3rem; }
+.skin-hint { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); }
+
+/* ── Launch Tiles (Discord) ── */
+.tile-launch { flex-direction: row; align-items: center; gap: 1rem; cursor: pointer; }
+.tile-launch:hover { background: var(--bg-card-solid-hov); }
+.tile-launch-icon { flex-shrink: 0; width: 52px; height: 52px; border-radius: var(--radius); background: var(--cyan-muted); border: 1px solid var(--border-cyan); display: flex; align-items: center; justify-content: center; color: var(--cyan); transition: transform var(--transition), box-shadow var(--transition); }
+.tile-launch:hover .tile-launch-icon { transform: scale(1.08) rotate(-3deg); box-shadow: 0 0 18px var(--cyan-glow); }
+.tile-launch-text { flex: 1; }
+.tile-launch-text h3 { font-size: 1.1rem; font-weight: 600; color: var(--text); }
+.tile-launch-text p { font-size: 0.85rem; color: var(--text-muted); }
+.tile-launch-arrow { color: var(--cyan); font-size: 1.2rem; opacity: 0.7; transition: transform var(--transition); }
+.tile-launch:hover .tile-launch-arrow { transform: translate(2px, -2px); opacity: 1; }
+
+/* ── Info Tile ── */
+.info-content { display: flex; flex-direction: column; gap: 0.5rem; }
+.info-content p { font-size: 0.95rem; color: var(--text-muted); }
+.info-content strong { color: var(--text); font-weight: 600; }
+.status-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; background: var(--text-dim); }
+.status-dot.online { background: #3ba55d; box-shadow: 0 0 8px rgba(59, 165, 93, 0.55); }
+.status-dot.offline { background: #ed4245; box-shadow: 0 0 8px rgba(237, 66, 69, 0.55); }
+.info-motd {
+  margin-top: 0.3rem; font-family: var(--font-mono); font-size: 0.8rem;
+  color: var(--text-dim); font-style: italic; line-height: 1.5;
+}
+
+/* ── Theme Toggle ── */
+.theme-toggle {
+  position: fixed; top: 1.25rem; right: 1.25rem; z-index: 999;
+  width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border);
+  background: var(--bg-glass); backdrop-filter: blur(12px); display: flex;
+  align-items: center; justify-content: center; box-shadow: 0 2px 16px rgba(0,0,0,0.4);
+  transition: all var(--transition);
+}
+.theme-toggle:hover { border-color: var(--border-cyan); box-shadow: 0 0 14px var(--cyan-glow); transform: scale(1.06); }
+.theme-icon { position: absolute; font-size: 1.15rem; transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.theme-icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+.theme-icon-sun { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+:root[data-theme="light"] .theme-icon-moon { opacity: 0; transform: rotate(90deg) scale(0.4); }
+:root[data-theme="light"] .theme-icon-sun { opacity: 1; transform: rotate(0deg) scale(1); }
+
+/* ── Responsive ── */
+@media (max-width: 880px) {
+  .jdkcraft-grid { grid-template-columns: 1fr; grid-template-areas: "skin" "ip" "discord" "info"; }
+  .dashboard { height: auto; min-height: 100svh; overflow: visible; justify-content: flex-start; }
+  html, body.dashboard-body { height: auto; min-height: 100%; overflow-y: auto; }
+  .skye-back { position: static; margin-bottom: 0.5rem; align-self: flex-start; }
+}
